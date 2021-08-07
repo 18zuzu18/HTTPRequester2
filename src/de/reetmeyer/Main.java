@@ -5,6 +5,7 @@ import de.reetmeyer.db.DbResponse;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Scanner;
 import java.util.logging.Handler;
 import java.util.logging.Level;
 import java.util.logging.LogRecord;
@@ -55,6 +56,12 @@ public class Main {
         System.exit(exitCode);
     }
 
+    private static void fillDb(Database db) {
+        while (db.getAllOpenRequests().size() < 18) {
+            db.addRequest("https://jsonplaceholder.typicode.com/todos/1");
+        }
+    }
+
     private static void debug(Database db){
         System.out.println("Add Request:");
         System.out.println(db.addRequest("https://jsonplaceholder.typicode.com/todos/1"));
@@ -70,7 +77,7 @@ public class Main {
 //        db.setResponse(response);
 //        System.out.println(response.responseTime.toString());
         System.out.println("Request in last 60m");
-        System.out.println(db.countRequests(60*60));
+        System.out.println(db.countRequests(60*60, ""));
     }
 
 }

@@ -84,10 +84,11 @@ public class Database {
         try {
             Statement smt = c.createStatement();
             smt.executeUpdate("UPDATE requests SET status = 2 WHERE id = " + response.id);
-            PreparedStatement psmt = c.prepareStatement("INSERT INTO responses (id, code, response) VALUES (?,?,?) RETURNING responsetime");
+            PreparedStatement psmt = c.prepareStatement("INSERT INTO responses (id, code, response, key) VALUES (?,?,?,?) RETURNING responsetime");
             psmt.setInt(1, response.id);
             psmt.setInt(2, response.code);
             psmt.setString(3, response.response);
+            psmt.setString(4, response.key);
             ResultSet rs = psmt.executeQuery();
             rs.next();
             response.responseTime = rs.getTimestamp(1).toLocalDateTime();
@@ -96,10 +97,10 @@ public class Database {
         }
     }
 
-    public int countRequests(long seconds) {
+    public int countRequests(long seconds, String key) {
         try {
             Statement smt = c.createStatement();
-            ResultSet rs = smt.executeQuery("SELECT count(*) FROM responses WHERE responsetime BETWEEN now()::timestamp - (interval '1s') * "+seconds+" AND now()::timestamp");
+            ResultSet rs = smt.executeQuery("SELECT count(*) FROM responses WHERE responsetime BETWEEN now()::timestamp - (interval '1s') * "+seconds+" AND now()::timestamp AND key = '" + key + "'");
             rs.next();
             return rs.getInt(1);
         } catch (SQLException throwables) {
