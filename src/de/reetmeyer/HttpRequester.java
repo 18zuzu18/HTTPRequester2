@@ -74,9 +74,9 @@ public class HttpRequester {
     }
 
     private void doRequest(DbRequest r, String key) {
-        Main.logger.log(Level.WARNING, "Dont Stop the Program now! Starting Request in 5s");
+        Main.logger.log(Level.WARNING, "Dont Stop the Program now! Starting Request in 1s");
         try {
-            Thread.sleep(5000);
+            Thread.sleep(1000);
         } catch (InterruptedException e) {
             e.printStackTrace();
         } // Wait 5s

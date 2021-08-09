@@ -18,13 +18,16 @@ public class Script {
             return;
         }
         String file = Files.readString(csv.toPath());
-        String[] lines = file.split("\n");
+        String[] lines = file.split("\r\n");
         Main.logger = Logger.getLogger("script");
 
         Database db = new Database("192.168.178.100", 5432, "requester", "9jO8y2t7hB59e88FCO0mrvwZ1VzOwbF7m42cLrP1pdPwONCJsRpKk7ZfVRvDQVKv", "requests");
 
 
         for (int i = 0; i < lines.length; i++) {
+
+            System.out.println(lines[i]);
+
             db.addRequest("https://www.alphavantage.co/query?function=OVERVIEW&symbol="+lines[i]);
         }
     }
